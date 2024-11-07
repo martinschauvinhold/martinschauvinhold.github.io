@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Salud+ - Portal del Paciente</title>
+    <style>
+        /* Estilos básicos */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9fb;
+            color: #333;
+        }
+        header {
+            background-color: #004085;
+            color: white;
+            padding: 1.5em;
+            text-align: center;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            background-color: #e9ecef;
+            margin: 0;
+        }
+        nav ul li {
+            margin: 0.5em 0;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #004085;
+            font-weight: bold;
+        }
+        section {
+            padding: 1em;
+            margin: 1em auto;
+            max-width: 900px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #004085;
+        }
+        button {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #004085;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003366;
+        }
+        .hidden {
+            display: none;
+        }
+        .filter-options {
+            margin-bottom: 1em;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
+            flex-wrap: wrap;
+        }
+        .filter-options select, .filter-options input {
+            padding: 0.5em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 0.5em;
+        }
+
+        /* Estilos Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1em;
+                font-size: 1.2em;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+            section {
+                padding: 1em;
+                margin: 0.5em;
+            }
+            .filter-options {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            button {
+                width: 100%;
+                padding: 0.8em;
+            }
+            nav ul li {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.5em;
+            }
+            button {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Portal del Paciente - Hospital Salud+</h1>
+        <p>Acceso seguro a su información médica y servicios de hospitalización.</p>
+    </header>
+
+    <!-- Login Section -->
+    <section id="loginSection">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Ingresar</button>
+        </form>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="dashboard" class="hidden">
+        <nav>
+            <ul>
+                <li><a href="#" onclick="showSection('appointments')">Citas Médicas</a></li>
+                <li><a href="#" onclick="showSection('medicalHistory')">Historial Médico</a></li>
+                <li><a href="#" onclick="showSection('documents')">Documentos Médicos</a></li>
+                <li><a href="#" onclick="logout()">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+
+        <!-- Citas Médicas -->
+        <section id="appointments" class="hidden">
+            <h2>Mis Citas Médicas</h2>
+            <div class="filter-options">
+                <label for="appointmentFilter">Ordenar por:</label>
+                <select id="appointmentFilter">
+                    <option value="creationDate">Fecha de creación</option>
+                    <option value="updateDate">Fecha de actualización</option>
+                    <option value="alphabetical">Alfabéticamente</option>
+                </select>
+                <input type="text" id="appointmentSearch" placeholder="Buscar coincidencia..." oninput="filterAppointments()">
+            </div>
+            <ul id="appointmentList">
+                <li data-creation="2024-11-01" data-update="2024-11-10"><strong>Cardiología</strong> - 15/11/2024 - 10:00 AM <button onclick="showDetails('appointmentDetails')">Ver Detalles</button></li>
+                <li data-creation="2024-10-20" data-update="2024-11-05"><strong>Check-up General</strong> - 20/11/2024 - 9:00 AM <button onclick="showDetails('appointmentDetails')">Ver Detalles</button></li>
+            </ul>
+        </section>
+
+        <!-- Historial Médico -->
+        <section id="medicalHistory" class="hidden">
+            <h2>Historial Médico</h2>
+            <div class="filter-options">
+                <label for="historyFilter">Ordenar por:</label>
+                <select id="historyFilter">
+                    <option value="creationDate">Fecha de creación</option>
+                    <option value="updateDate">Fecha de actualización</option>
+                    <option value="alphabetical">Alfabéticamente</option>
+                </select>
+                <input type="text" id="historySearch" placeholder="Buscar coincidencia..." oninput="filterHistory()">
+            </div>
+            <ul id="medicalHistoryList">
+                <li data-creation="2024-10-05" data-update="2024-10-06"><strong>Examen:</strong> Hemograma - Fecha: 05/10/2024 - <button onclick="showDetails('historyDetails')">Ver Resultados</button></li>
+                <li data-creation="2024-09-15" data-update="2024-09-18"><strong>Examen:</strong> Radiografía de Tórax - Fecha: 15/09/2024 - <button onclick="showDetails('historyDetails')">Ver Resultados</button></li>
+            </ul>
+        </section>
+
+        <!-- Documentos Médicos -->
+        <section id="documents" class="hidden">
+            <h2>Documentos Médicos</h2>
+            <div class="filter-options">
+                <label for="documentFilter">Ordenar por:</label>
+                <select id="documentFilter">
+                    <option value="creationDate">Fecha de creación</option>
+                    <option value="updateDate">Fecha de actualización</option>
+                    <option value="alphabetical">Alfabéticamente</option>
+                </select>
+                <input type="text" id="documentSearch" placeholder="Buscar coincidencia..." oninput="filterDocuments()">
+            </div>
+            <ul id="documentList">
+                <li data-creation="2024-10-05" data-update="2024-10-06"><a href="#" onclick="showDetails('documentDetails')">Hemograma - 05/10/2024</a></li>
+                <li data-creation="2024-09-15" data-update="2024-09-18"><a href="#" onclick="showDetails('documentDetails')">Radiografía de Tórax - 15/09/2024</a></li>
+            </ul>
+        </section>
+
+        <!-- Detalles de Cita -->
+        <section id="appointmentDetails" class="hidden">
+            <h2>Detalles de la Cita Médica</h2>
+            <p><strong>Especialidad:</strong> Cardiología</p>
+            <p><strong>Fecha:</strong> 15/11/2024</p>
+            <p><strong>Hora:</strong> 10:00 AM</p>
+            <p><strong>Médico:</strong> Dr. Juan Pérez</p>
+            <button onclick="showSection('appointments')">Volver a Citas</button>
+        </section>
+
+        <!-- Detalles de Historial Médico -->
+        <section id="historyDetails" class="hidden">
+            <h2>Detalles del Examen Médico</h2>
+            <p><strong>Examen:</strong> Hemograma</p>
+            <p><strong>Fecha:</strong> 05/10/2024</p>
+            <p><strong>Resultados:</strong> Hemoglobina: 13.5 g/dL, Hematocrito: 41%</p>
+            <button onclick="showSection('medicalHistory')">Volver al Historial Médico</button>
+        </section>
+
+        <!-- Detalles de Documentos Médicos -->
+        <section id="documentDetails" class="hidden">
+            <h2>Detalles del Documento Médico</h2>
+            <p><strong>Documento:</strong> Hemograma</p>
+            <a href="results/hemograma.pdf" download>Descargar Documento</a>
+            <button onclick="showSection('documents')">Volver a Documentos</button>
+        </section>
+    </section>
+
+    <script>
+        // Función de inicio de sesión
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("dashboard").classList.remove("hidden");
+            showSection("appointments");
+        });
+
+        // Función de cierre de sesión
+        function logout() {
+            document.getElementById("dashboard").classList.add("hidden");
+            document.getElementById("loginSection").classList.remove("hidden");
+        }
+
+        // Función para mostrar secciones
+        function showSection(sectionId) {
+            document.querySelectorAll("#dashboard section").forEach(section => {
+                section.classList.add("hidden");
+            });
+            document.getElementById(sectionId).classList.remove("hidden");
+        }
+
+        // Mostrar detalles
+        function showDetails(detailSectionId) {
+            showSection(detailSectionId);
+        }
+
+        // Función de filtrado y orden para citas
+        function filterAppointments() {
+            const filter = document.getElementById("appointmentFilter").value;
+            const searchQuery = document.getElementById("appointmentSearch").value.toLowerCase();
+            const items = Array.from(document.querySelectorAll("#appointmentList li"));
+            
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(searchQuery) ? "list-item" : "none";
+            });
+            sortItems(items, filter);
+        }
+
+        // Función de filtrado y orden para historial médico
+        function filterHistory() {
+            const filter = document.getElementById("historyFilter").value;
+            const searchQuery = document.getElementById("historySearch").value.toLowerCase();
+            const items = Array.from(document.querySelectorAll("#medicalHistoryList li"));
+            
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(searchQuery) ? "list-item" : "none";
+            });
+            sortItems(items, filter);
+        }
+
+        // Función de filtrado y orden para documentos
+        function filterDocuments() {
+            const filter = document.getElementById("documentFilter").value;
+            const searchQuery = document.getElementById("documentSearch").value.toLowerCase();
+            const items = Array.from(document.querySelectorAll("#documentList li"));
+            
+            items.forEach(item => {
+                item.style.display = item.textContent.toLowerCase().includes(searchQuery) ? "list-item" : "none";
+            });
+            sortItems(items, filter);
+        }
+
+        // Función de ordenamiento
+        function sortItems(items, filter) {
+            if (filter === "alphabetical") {
+                items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+            } else if (filter === "creationDate") {
+                items.sort((a, b) => new Date(a.dataset.creation) - new Date(b.dataset.creation));
+            } else if (filter === "updateDate") {
+                items.sort((a, b) => new Date(a.dataset.update) - new Date(b.dataset.update));
+            }
+            items.forEach(item => item.parentNode.appendChild(item));
+        }
+    </script>
+</body>
+</html>
