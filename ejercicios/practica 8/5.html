@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ejercicios JavaScript</title>
+    <script>
+      let primerNombre = "Nachito";
+      let apellido = "Contartese";
+    </script>
+  </head>
+  <body>
+    <script>
+      let numeroAleatorio = Math.floor(Math.random() * 11);
+      let adivinado = false;
+
+      while (!adivinado) {
+        let intento = prompt("Adivina el número (0-10):");
+        if (intento == numeroAleatorio) {
+          alert("¡Correcto! Has adivinado el número");
+          adivinado = true;
+        } else if (intento < numeroAleatorio) {
+          alert("Tu número es menor que el número a adivinar");
+        } else {
+          alert("Tu número es mayor que el número a adivinar");
+        }
+      }
+    </script>
+  </body>
+</html>

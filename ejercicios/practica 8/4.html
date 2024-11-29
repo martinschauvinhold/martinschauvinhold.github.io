@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ejercicios JavaScript</title>
+    <script>
+      let primerNombre = "Nachito";
+      let apellido = "Contartese";
+    </script>
+  </head>
+  <body>
+    <script>
+      let numeros = [];
+      for (let i = 0; i < 5; i++) {
+        numeros.push(prompt("Ingrese el número " + (i + 1) + ":"));
+      }
+      let mayor = Math.max(...numeros);
+      let menor = Math.min(...numeros);
+
+      document.write("<ul>");
+      document.write("<li>El mayor número es: " + mayor + "</li>");
+      document.write("<li>El menor número es: " + menor + "</li>");
+      document.write("</ul>");
+    </script>
+  </body>
+</html>
